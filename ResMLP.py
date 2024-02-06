@@ -38,4 +38,27 @@ class ResidualMLPClassifier:
 
         return x_train, y_train, x_test, y_test, num_labels
 
+    def build_ResMLP_model(self, input_size, hidden_units, num_labels, dropout):
+        model = Sequential()
+        model.add(Dense(hidden_units, input_dim=input_size))
+        model.add(Activation('relu'))
+        model.add(Dropout(dropout))
+
+        # Residual block
+        residual_block = Sequential([
+            Dense(hidden_units, activation='relu'),
+            Dropout(dropout),
+            Dense(hidden_units),
+        ])
+
+        # Adding the residual block with a skip connection
+        model.add(residual_block)
+        model.add(Dense(hidden_units))  # Shortcut connection
+        model.add(Activation('relu'))
+
+        model.add(Dense(num_labels))
+        model.add(Activation('softmax'))
+        model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+        return model
+
     
