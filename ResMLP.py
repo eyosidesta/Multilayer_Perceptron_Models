@@ -61,4 +61,8 @@ class ResidualMLPClassifier:
         model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
         return model
 
+    def train_ResMLP_model(self, model, x_train, y_train, epochs, batch_size):
+        history = model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size, verbose=2)
+        self.history = history
+
     
