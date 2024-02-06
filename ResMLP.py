@@ -80,3 +80,21 @@ class ResidualMLPClassifier:
         else:
             print("No training history available.")
 
+if __name__ == "__main__":
+    resmlp_classifier = ResidualMLPClassifier()
+
+    x_train, y_train, x_test, y_test = resmlp_classifier.load_mnist_data()
+    input_value = resmlp_classifier.ResMLP_get_input_val(x_train)
+    x_train, y_train, x_test, y_test, num_labels = resmlp_classifier.ResMLP_preprocess_data(x_train, y_train, x_test, y_test)
+
+    batch_size = 128
+    hidden_units = 256
+    dropout = 0.45
+    
+    resmlp_classifier.model = resmlp_classifier.build_ResMLP_model(input_value, hidden_units, num_labels, dropout)
+    resmlp_classifier.train_ResMLP_model(resmlp_classifier.model, x_train, y_train, epochs=20, batch_size=batch_size)
+
+    accuracy = resmlp_classifier.evaluate_ResMLP_model(resmlp_classifier.model, x_test, y_test, batch_size=batch_size)
+    print("Accuracy: %.1f%%" % (100.0 * accuracy))
+
+    resmlp_classifier.plot_accuracy()
