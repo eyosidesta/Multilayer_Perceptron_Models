@@ -29,4 +29,13 @@ class ResidualMLPClassifier:
 
         return x_train, x_test
 
+    def ResMLP_preprocess_data(self, x_train, y_train, x_test, y_test):
+        num_labels = len(np.unique(y_train))
+        y_train = to_categorical(y_train)
+        y_test = to_categorical(y_test)
+        input_value = self.ResMLP_get_input_val(x_train)
+        x_train, x_test = self.ResMLP_scale_image_size(x_train, x_test, input_value)
+
+        return x_train, y_train, x_test, y_test, num_labels
+
     
