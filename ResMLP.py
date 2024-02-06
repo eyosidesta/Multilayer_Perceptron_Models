@@ -65,4 +65,8 @@ class ResidualMLPClassifier:
         history = model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size, verbose=2)
         self.history = history
 
-    
+    def evaluate_ResMLP_model(self, model, x_test, y_test, batch_size):
+        _, accuracy = model.evaluate(x_test, y_test, batch_size=batch_size, verbose=0)
+        return accuracy
+
+   
