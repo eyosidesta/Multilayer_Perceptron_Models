@@ -69,4 +69,14 @@ class ResidualMLPClassifier:
         _, accuracy = model.evaluate(x_test, y_test, batch_size=batch_size, verbose=0)
         return accuracy
 
-   
+    def plot_accuracy(self):
+        if self.history is not None and 'accuracy' in self.history.history:
+            plt.figure("Model Performance Output")
+            plt.plot(self.history.history['accuracy'])
+            plt.title('Model Accuracy over Epochs')
+            plt.xlabel('Epoch')
+            plt.ylabel('Accuracy')
+            plt.show()
+        else:
+            print("No training history available.")
+
