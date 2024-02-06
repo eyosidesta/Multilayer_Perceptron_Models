@@ -97,3 +97,25 @@ class MY_MLP_Model:
     def predict(self, x_train):
         activate = np.dot(x_train, self.weights_input_hidden) + self.bias_hidden
         return self.step_function(activate)
+
+# instantiate the My_MLP_Model class
+model_call = MY_MLP_Model()
+x_train, y_train, x_test, y_test = model_call.load_model()
+one_hot_y_train, one_hot_y_test, num_labels = model_call.preprocess_labels(y_train, y_test)
+x_train_normalized, x_test_normalized = model_call.normalize_training_data(x_train, x_test)
+
+w, b = model_call.train_model(x_train_normalized[:1000], one_hot_y_train[:1000])
+
+y_p_trained = model_call.predict(x_train_normalized)
+y_p_test = model_call.predict(x_test_normalized)
+
+print("Training Accuracy:  %.2f%%" % (100 - np.mean(np.abs(y_p_trained - one_hot_y_train)) * 100))
+print("Testing Accuracy: %.2f%%" %  (100 - np.mean(np.abs(y_p_test - one_hot_y_test)) * 100))
+
+prediction = model_call.predict(x_train_normalized)
+predicted_one_hot = model_call.step_function(prediction)
+
+true_one_hot = one_hot_y_train
+
+accuracy = np.mean(np.equal(predicted_one_hot, true_one_hot))
+print("Accuracy: %.2f%%" % (accuracy * 100))
